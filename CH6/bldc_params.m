@@ -1,0 +1,9 @@
+Rs = 0.7;
+Kb = 0.0523;
+Ls_Lm = 5.21e-3;
+pole = 4;
+J = 0.0002;
+B = 0.0005;
+Lamda_p = Kb * pole/2;
+T_rate = 1.78;
+I_rate = 8.5;

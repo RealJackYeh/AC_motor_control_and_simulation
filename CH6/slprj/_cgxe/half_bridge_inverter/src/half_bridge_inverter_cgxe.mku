@@ -1,0 +1,80 @@
+#--------------------------- Tool Specifications -------------------------
+#
+# Modify the following macros to reflect the tools you wish to use for
+# compiling and linking your code.
+#
+CC = /Applications/MATLAB_R2022b.app/bin/mex -R2018a
+LD = $(CC)
+ 
+MODEL  = half_bridge_inverter
+TARGET = cgxe
+MODULE_SRCS 	= m_1mVk2EwqbKNW1Ud77dzFNB.c
+MODEL_SRC	= half_bridge_inverter_cgxe.c
+MODEL_REG    = half_bridge_inverter_cgxe_registry.c
+MAKEFILE    = half_bridge_inverter_cgxe.mku
+MATLAB_ROOT	= /Applications/MATLAB_R2022b.app
+BUILDARGS   = 
+#------------------------------ Include/Lib Path ------------------------------
+ 
+
+ 
+USER_INCLUDES = -I"/Users/jack/Desktop/交流馬達控制與模擬技術/github/CH6" -I"/Users/jack/Desktop/交流馬達控制與模擬技術/github/CH4" -I"/Users/jack/Desktop/交流馬達控制與模擬技術/github/CH6/slprj/_cprj" 
+MLSL_INCLUDES     = \
+    -I"/Applications/MATLAB_R2022b.app/extern/include" \
+    -I"/Applications/MATLAB_R2022b.app/simulink/include" \
+    -I"/Applications/MATLAB_R2022b.app/rtw/c/src"
+
+THIRD_PARTY_INCLUDES = -I"/Users/jack/Desktop/交流馬達控制與模擬技術/github/CH6/slprj/_cgxe/half_bridge_inverter/src" -I"/Applications/MATLAB_R2022b.app/toolbox/dsp/halidesim/include" 
+
+INCLUDE_PATH = $(MLSL_INCLUDES) $(USER_INCLUDES) $(THIRD_PARTY_INCLUDES)
+ 
+#----------------- Compiler and Linker Options --------------------------------
+ 
+
+CC_OPTS =  -w   
+CPP_REQ_DEFINES = -DMATLAB_MEX_FILE
+ 
+# Uncomment this line to move warning level to W4
+# cflags = $(cflags:W3=W4)
+CFLAGS = $(CPP_REQ_DEFINES) $(INCLUDE_PATH) CFLAGS="\$$CFLAGS $(CC_OPTS)"
+ 
+LDFLAGS = -Wl,-rpath,@loader_path  
+ 
+AUXLDFLAGS = 
+#----------------------------- Source Files -----------------------------------
+ 
+USER_OBJS =
+
+AUX_SRCS =   
+
+REQ_SRCS  = $(MODEL_SRC) $(MODEL_REG) $(MODULE_SRCS) $(AUX_SRCS) 
+
+REQ_OBJS = $(REQ_SRCS:.cpp=.o)
+REQ_OBJS2 = $(REQ_OBJS:.c=.o)
+OBJS = $(REQ_OBJS2) $(USER_OBJS) $(AUX_ABS_OBJS)
+OBJLIST_FILE = half_bridge_inverter_cgxe.mol
+TMWLIB = -L/Applications/MATLAB_R2022b.app/bin/maci64 -lfixedpoint -L/Applications/MATLAB_R2022b.app/bin/maci64 -lut -L/Applications/MATLAB_R2022b.app/bin/maci64 -lemlrt -L/Applications/MATLAB_R2022b.app/bin/maci64 -lmwslexec_simbridge -L/Applications/MATLAB_R2022b.app/bin/maci64 -lmwcgxert -L/Applications/MATLAB_R2022b.app/bin/maci64 -lmwcgxeooprt -L/Applications/MATLAB_R2022b.app/bin/maci64 -lmwmathutil -L/Applications/MATLAB_R2022b.app/bin/maci64 -lmwslccrt -L/Applications/MATLAB_R2022b.app/bin/maci64 -lmwstringutil -L/Applications/MATLAB_R2022b.app/bin/maci64 -lmwipp -L/Applications/MATLAB_R2022b.app/bin/maci64 -lcovrt -L/Applications/MATLAB_R2022b.app/bin/maci64 -lmwsl_sfcn_cov_bridge -L/Applications/MATLAB_R2022b.app/bin/maci64 -lmwdsp_halidesim -L/Applications/MATLAB_R2022b.app/bin/maci64 -lmwdspcgsim 
+PARLIB = 
+  MAPCSF = /Applications/MATLAB_R2022b.app/tools/maci64/mapcsf
+   # RUN_MAPCSF_ON_UNIX is defined only if MAPCSF exists on this platform.
+   ifneq ($(wildcard $(MAPCSF)),) # run MAPCSF if it exists on this platform
+      RUN_MAPCSF_ON_UNIX =  /Applications/MATLAB_R2022b.app/tools/maci64/mapcsf $@
+   endif
+ 
+THIRD_PARTY_LIBS = /Applications/MATLAB_R2022b.app/bin/maci64/libmwdsp_halidesim.dylib 
+
+#--------------------------------- Rules --------------------------------------
+ 
+MEX_FILE_NAME = $(MODEL)_$(TARGET).mexmaci64
+ 
+$(MEX_FILE_NAME): $(MAKEFILE) $(OBJS) $(MEXLIB)
+	@echo ### Linking ...
+	$(CC) -silent LDFLAGS="\$$LDFLAGS $(LDFLAGS) $(AUXLDFLAGS)" -output $(MEX_FILE_NAME) @$(OBJLIST_FILE) $(OBJS) $(TMWLIB) $(PARLIB) $(THIRD_PARTY_LIBS) 
+	$(RUN_MAPCSF_ON_UNIX)
+
+%.o :	%.c
+	$(CC) -c $(CFLAGS) $<
+
+%.o :	%.cpp
+	$(CC) -c $(CFLAGS) $<
+

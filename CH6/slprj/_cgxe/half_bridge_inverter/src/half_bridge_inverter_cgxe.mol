@@ -1,0 +1,4 @@
+-L/Applications/MATLAB_R2022b.app/bin/maci64
+-lmwblas
+-L/Applications/MATLAB_R2022b.app/bin/maci64
+-lmwblas

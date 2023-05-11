@@ -1,3 +1,3 @@
 Ts = 0.0001;
-iq_PID = tf([3120 300000],[1 0]);
-digital_iq_PID = c2d(iq_PID, Ts)
+id_PID = tf([6283 1308958],[1 0]);
+digital_id_PID = c2d(id_PID, Ts)
